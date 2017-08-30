@@ -21,22 +21,34 @@ class RangeCollection {
     }
 
     /**
+     * Sort range collection by starting value
+     */
+    sortRanges() {
+        this.collection = this.collection.sort((a, b) => {
+            return a[0] - b[0];
+        });
+    }
+
+    /**
      * Adds a range to the collection
      * @param {Array<number>} range - Array of two integers that specify beginning and end of range.
      */
     add(range) {
         let min = range[0], max = range[1], overlaped = 0, firstFound = this.collection.length;
-        for(let i in this.collection){
-            if(this.isOverlap(range, this.collection[i])){
-                overlaped++;
-                if(firstFound == this.collection.length) {
-                    firstFound = i;
-                    min = Math.min(range[0],this.collection[firstFound][0]);
+        if(min != max) {
+            for(let i in this.collection){
+                if(this.isOverlap(range, this.collection[i])){
+                    overlaped++;
+                    if(firstFound == this.collection.length) {
+                        firstFound = i;
+                        min = Math.min(range[0],this.collection[firstFound][0]);
+                    }
+                    max = Math.max(range[1],this.collection[i][1]);
                 }
-                max = Math.max(range[1],this.collection[i][1]);
             }
+            this.collection.splice(firstFound, overlaped, [min, max]);
+            this.sortRanges();
         }
-        this.collection.splice(firstFound, overlaped, [min, max]);
     }
 
     /**
@@ -60,6 +72,7 @@ class RangeCollection {
             }
         }
         this.collection.splice(firstFound, overlaped, ...subCollection);
+        this.sortRanges();
     }
 
     /**
