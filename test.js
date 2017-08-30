@@ -25,7 +25,18 @@ class RangeCollection {
      * @param {Array<number>} range - Array of two integers that specify beginning and end of range.
      */
     add(range) {
-        // TODO: implement this
+        let min = range[0], max = range[1], overlaped = 0, firstFound = this.collection.length;
+        for(let i in this.collection){
+            if(this.isOverlap(range, this.collection[i])){
+                overlaped++;
+                if(firstFound == this.collection.length) {
+                    firstFound = i;
+                    min = Math.min(range[0],this.collection[firstFound][0]);
+                }
+                max = Math.max(range[1],this.collection[i][1]);
+            }
+        }
+        this.collection.splice(firstFound, overlaped, [min, max]);
     }
 
     /**
@@ -33,14 +44,31 @@ class RangeCollection {
      * @param {Array<number>} range - Array of two integers that specify beginning and end of range.
      */
     remove(range) {
-        // TODO: implement this
+        let overlaped = 0, subCollection = [], firstFound = this.collection.length;
+        for(let i in this.collection){
+            if(this.isOverlap(range, this.collection[i])){
+                if(firstFound == this.collection.length) {
+                    firstFound = i;
+                }
+                if(range[0] > this.collection[i][0]){
+                    subCollection.push([this.collection[i][0], range[0]]);
+                }
+                if(range[1] < this.collection[i][1]){
+                    subCollection.push([range[1], this.collection[i][1]]);
+                }
+                if(subCollection.length) overlaped++;
+            }
+        }
+        this.collection.splice(firstFound, overlaped, ...subCollection);
     }
 
     /**
      * Prints out the list of ranges in the range collection
      */
     print() {
-        // TODO: implement this
+        console.log(this.collection.map((range)=>{
+            return '[' + range[0] + ', ' + range[1] + ')';
+        }).join(' '));
     }
 }
 
