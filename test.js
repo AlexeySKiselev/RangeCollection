@@ -70,6 +70,32 @@ class RangeCollection {
             return '[' + range[0] + ', ' + range[1] + ')';
         }).join(' '));
     }
+
+    /**
+     * Returns an array with values in each ranges in collection
+     */
+    ranges() {
+        return this.collection.map((range) => {
+            let sub = [];
+            for(let i = range[0]; i < range[1]; i++){
+                sub.push(i);
+            }
+            return sub;
+        });
+    }
+
+    /**
+     * Return an array contain all values of all ranges in collection
+     */
+    values() {
+        return this.collection.reduce((total, range) => {
+            let sub = [];
+            for(let i = range[0]; i < range[1]; i++){
+                sub.push(i);
+            }
+            return [...total, ...sub];
+        },[]);
+    }
 }
 
 // Example run
