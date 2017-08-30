@@ -7,6 +7,19 @@
  * NOTE: Feel free to add any extra member variables/functions you like.
  */
 class RangeCollection {
+    constructor() {
+        this.collection = [];
+    }
+
+    /**
+     * Check if new range is overlaping at least one of the existing ranges
+     * @param {Array<number>} range
+     * @param {Array<number>} existingRange - one range from range collection
+     */
+    isOverlap(range, existingRange) {
+        return (existingRange[0] <= range[1]) && (existingRange[1] >= range[0]);
+    }
+
     /**
      * Adds a range to the collection
      * @param {Array<number>} range - Array of two integers that specify beginning and end of range.
